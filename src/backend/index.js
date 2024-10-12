@@ -13,6 +13,7 @@ app.use(express.static('/home/node/app/static/'));
 
 //=======[ Main module code ]==================================================
 
+// ABM Dispositivos
 app.get('/devices', function(req, res, next) {
     // Ejecutamos una query para obtener la lista de dispositivos
     devices = dbConnection.query('SELECT * FROM `Devices`', function (error, results) {
@@ -53,6 +54,51 @@ app.delete('/devices/:id', function(req, res, next) {
             console.error(`Error eliminado datos deviceId: ${deviceId}`)
         };
         console.log(`Dispositivo ${deviceId} eliminado correctamente.`)
+        res.send('').status(200);
+      });
+});
+
+// ABM Ambientes
+app.get('/rooms', function(req, res, next) {
+    // Ejecutamos una query para obtener la lista de ambientes
+    rooms = dbConnection.query('SELECT * FROM `Rooms`', function (error, results) {
+        if (error) throw error;
+        res.send(JSON.stringify(results)).status(200);
+      });
+});
+
+app.post('/rooms', function(req, res, next) {
+    const room = req.body
+    rooms = dbConnection.query('INSERT INTO `Rooms` SET ?', room, function (error) {
+        if (error) {
+            console.error('Error insertando datos:', JSON.stringify(room))
+        };
+        console.log(`Ambiente ${JSON.stringify(room)} insertado correctamente.`)
+        res.send('').status(200);
+      });
+});
+
+app.put('/rooms/:id', function(req, res, next) {
+    const room = req.body
+    const roomId = req.params.id
+    const query = 'UPDATE `Rooms` SET ? WHERE id='+roomId
+    rooms = dbConnection.query(query, room, function (error) {
+        if (error) {
+            console.error(`Error actualizando datos roomId: ${roomId}`, JSON.stringify(room))
+        };
+        console.log(`Ambiente ${roomId} actualizado correctamente.`)
+        res.send('').status(200);
+      });
+});
+
+app.delete('/rooms/:id', function(req, res, next) {
+    const roomId = req.params.id
+    const query = 'DELETE FROM `Rooms` WHERE id='+roomId
+    rooms = dbConnection.query(query, function (error) {
+        if (error) {
+            console.error(`Error eliminado datos roomId: ${roomId}`)
+        };
+        console.log(`Ambiente ${roomId} eliminado correctamente.`)
         res.send('').status(200);
       });
 });

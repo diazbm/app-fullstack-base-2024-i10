@@ -11,14 +11,16 @@ var connection = mysql.createConnection({
 });
 
 //=======[ Main module code ]==================================================
-
-connection.connect(function(err) {
-    if (err) {
-        console.error('Error while connect to DB: ' + err.stack);
-        return;
-    }
-    console.log('Connected to DB under thread ID: ' + connection.threadId);
-});
+// Iniciar la conexión unos segundos después para evitar error al levantar con docker compose.
+setTimeout(function(){
+    connection.connect(function(err) {
+        if (err) {
+            console.error('Error while connect to DB: ' + err.stack);
+            return;
+        }
+        console.log('Connected to DB under thread ID: ' + connection.threadId);
+    });
+},5000)
 
 module.exports = connection;
 

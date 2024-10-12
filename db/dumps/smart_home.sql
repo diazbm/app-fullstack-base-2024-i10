@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Devices`
+-- Estructura de tabla para la tabla `Devices`
 --
 
 CREATE TABLE `Devices` (
@@ -37,40 +37,84 @@ CREATE TABLE `Devices` (
   `name` varchar(64) NOT NULL,
   `description` varchar(128) NOT NULL,
   `state` int(11) NOT NULL,
-  `type` int(11) NOT NULL
+  `type` int(11) NOT NULL,
+  `room_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `Devices`
+-- Volcado de datos para la tabla `Devices`
 --
 
-INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES
-(1, 'Lampara 1', 'Luz living', 1, 0),
-(2, 'Lampara 2', 'Luz cocina', 0, 0),
-(3, 'Velador', 'Velador living', 1, 0),
-(4, 'Persiana 1', 'Persiana living', 1, 1),
-(5, 'Persiana 2', 'Persiana de la cocina', 1, 1),
-(6, 'Persiana 3', 'Persiana balcon', 0, 1);
+INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`, `room_id`) VALUES
+(1, 'Lampara 1', 'Luz living', 1, 0, 1),
+(2, 'Lampara 2', 'Luz cocina', 0, 0, 2),
+(3, 'Velador', 'Velador living', 1, 0, 1),
+(4, 'Persiana 1', 'Persiana living', 1, 1, 1),
+(5, 'Persiana 2', 'Persiana de la cocina', 1, 1, 2),
+(6, 'Persiana 3', 'Persiana balcon', 0, 1, 3);
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Estructura de tabla para la tabla `Rooms`
+--
+
+CREATE TABLE `Rooms` (
+  `id` int(11) NOT NULL,
+  `Name` varchar(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `Rooms`
+--
+
+INSERT INTO `Rooms` (`id`, `Name`) VALUES
+(1, 'Living'),
+(2, 'Cocina'),
+(3, 'Balcón');
+
+--
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `Devices`
+-- Indices de la tabla `Devices`
 --
 ALTER TABLE `Devices`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_Devices_Rooms` (`room_id`);
+
+--
+-- Indices de la tabla `Rooms`
+--
+ALTER TABLE `Rooms`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `Devices`
+-- AUTO_INCREMENT de la tabla `Devices`
 --
 ALTER TABLE `Devices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `Rooms`
+--
+ALTER TABLE `Rooms`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `Devices`
+--
+ALTER TABLE `Devices`
+  ADD CONSTRAINT `FK_Devices_Rooms` FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`Id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
