@@ -48,7 +48,7 @@ CREATE TABLE `Devices` (
 INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`, `room_id`) VALUES
 (1, 'Lampara 1', 'Luz living', 1, 0, 1),
 (2, 'Lampara 2', 'Luz cocina', 0, 0, 2),
-(3, 'Velador', 'Velador living', 1, 0, 1),
+(3, 'Velador', 'Velador living', 1, 2, 1),
 (4, 'Persiana 1', 'Persiana living', 1, 1, 1),
 (5, 'Persiana 2', 'Persiana de la cocina', 1, 1, 2),
 (6, 'Persiana 3', 'Persiana balcon', 0, 1, 3);
@@ -61,14 +61,14 @@ INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`, `room_id`) 
 
 CREATE TABLE `Rooms` (
   `id` int(11) NOT NULL,
-  `Name` varchar(128) NOT NULL
+  `name` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `Rooms`
 --
 
-INSERT INTO `Rooms` (`id`, `Name`) VALUES
+INSERT INTO `Rooms` (`id`, `name`) VALUES
 (1, 'Living'),
 (2, 'Cocina'),
 (3, 'Balcón');

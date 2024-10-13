@@ -135,6 +135,8 @@ app.get('/rooms/devices/list', function (req, res, next) {
 
 
 app.listen(PORT, function (req, res) {
+    //=======[ Main module code ]==================================================
+    // Iniciar la conexión unos segundos después para evitar error al levantar con docker compose.
     console.log("NodeJS API running correctly");
 });
 

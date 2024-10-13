@@ -1,59 +1,115 @@
 <!DOCTYPE html>
-  <html>
-    <head>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <link type="text/css" rel="stylesheet" href="./static/css/materialize.min.css"  media="screen,projection"/>
-      <link type="text/css" rel="stylesheet" href="./static/css/styles.css"  media="screen,projection"/>
-      <script type="text/javascript" src="./static/js/materialize.min.js"></script>
-      <script type="text/javascript" src="js/main.js"></script>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <main>
-            <!-- Navigation bar -->
-            <nav style="background-color:#124580">
-                <div class="nav-wrapper">
-                    <a href="#!" class="brand-logo left" style="margin-left: 15px;">Smart Home</a>
-                    <ul id="nav-mobile" class="right" style="margin-right: 15px;">
-                        <li><a href="#">Help</a></li>
-                    </ul>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./static/css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="./static/css/styles.css" media="screen,projection" />
+    <script type="text/javascript" src="./static/js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/api.js" defer></script>
+    <script type="text/javascript" src="js/ViewMainPage.js" defer></script>
+    <script type="text/javascript" src="js/main.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <main>
+        <!-- Navigation bar -->
+        <nav style="background-color:#124580">
+            <div class="nav-wrapper">
+                <a href="" class="brand-logo left" style="margin-left: 15px;"><i class="material-icons">home</i>Mis dispositivos</a>
+            </div>
+        </nav>
+        <!-- Page Body -->
+        <div class="container main-view">
+            <!-- Collapsible list for rooms -->
+             <div class="add-item-container">
+                <h5>Mis ambientes</h5>
+                <a class="waves-effect waves-light btn" id="add-item-btn">Agregar dispositivo</a>
+             </div>
+            
+            <div id="rooms-list" class="room-card">
+            </div>
+        </div>
+        <div class="device-form" id="device-form-container">
+            <center><h6>Agregar dispositivo</h6></center>
+            <form id="device-form">
+                <div class="input-field">
+                    <input id="device-name" type="text" placeholder=" ">
+                    <label for="device-name">Nombre*</label>
                 </div>
-            </nav>	
-            <!-- Page Body -->
-            <div class="container">
-                <br/>
-                <h3>Smart Home Web Client!</h3>
-                <br/>
-                <div class="row">
-                    <div class="input-field col s12 m12 l12 xl12">
-                        <textarea id="textarea_1" class="materialize-textarea" style="height: 150px;" readonly></textarea>
-                    </div>
-                    <div class="col s4 m4 l2 xl2">
-                        <button class="btn waves-effect waves-light button-view" onclick="SayHello();" name="hello_button">PRESS ME</button>
+                <div class="input-field">
+                    <input id="device-description" type="text" placeholder=" ">
+                    <label for="device-description">Descripción*</label>
+                </div>
+                <div class="states-inputs-group-rooms">
+                    <div class="input-field input-radios-rooms" id="input-radios-rooms">
                     </div>
                 </div>
-            </div>	
-        </main>
-		<!-- Page Footer -->
-        <footer class="page-footer" style="background-color:#124580">
-            <div class="container">
-                <div class="row">
-                    <div class="col l6 s6">
-                        <h5 class="white-text">Smart Home</h5>
-                        <p class="grey-text text-lighten-4">Copyright ### - 2021</p>
+                <div class="states-inputs-group-devices">
+                    <div class="input-field input-radios-devices">
+                        <span>Tipo*</span>
+                        <div class="device-types">
+                            <p>
+                                <label>
+                                    <input id="device-type-light-0" class="form-types-selector with-gap" name="device-type" type="radio" />
+                                    <span>Luz</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input id="device-type-blind-1" class="form-types-selector with-gap" name="device-type" type="radio" />
+                                    <span>Persiana</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input id="device-type-lamp-2" class="form-types-selector with-gap" name="device-type" type="radio" />
+                                    <span>Velador</span>
+                                </label>
+                            </p>
+                        </div>
                     </div>
-                    <div class="col l6 s6">
-                        <h5 class="white-text right-align">Contact</h5>
-                        <p class="white-text right-align">
-                            <a class="grey-text text-lighten-3" href="!#">Email | </a>
-                            <a class="grey-text text-lighten-3" href="!#">Twitter | </a>
-                            <a class="grey-text text-lighten-3" href="!#">LinkedIn</a>
-                        </p>
+                    <div class="input-field input-switch">
+                        <div class="switch">
+                            <label>
+                                Off
+                                <input id="device-state" type="checkbox">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
                     </div>
+                </div>
+                <div id="input-validations">
+                    <p>Todos los campos son requeridos</p>
+                </div>
+                <div class="device-form-footer-container">
+                    <div class="device-form-footer">
+                        <a class="waves-effect waves-light btn" id="exit-new-device">Cancelar</a>
+                        <a class="waves-effect waves-light btn" id="save-new-device">Guardar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+    <!-- Page Footer -->
+    <footer class="page-footer" style="background-color:#124580">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s6">
+                    <h5 class="white-text">Smart Home</h5>
+                    <p class="grey-text text-lighten-4">Copyright Mariángel Diaz Balza - 2024</p>
+                </div>
+                <div class="col l6 s6">
+                    <h5 class="white-text right-align">Contact</h5>
+                    <p class="white-text right-align">
+                        <a class="grey-text text-lighten-3" href="!#">jmariangel.diaz@gmail.com</a>
+                    </p>
                 </div>
             </div>
-        </footer>
-		<!--JavaScript at end of body for optimized loading-->
-	
-    </body>
-  </html>
+        </div>
+    </footer>
+</body>
+
+</html>
