@@ -205,6 +205,10 @@ Se sumó una tabla nueva que representa los ambientes en los que se ubican los d
 
 ### Backend
 
+Se creó una clase DataBase para gestionar la conexión con la base de datos, se implementó el patrón de diseño [singleton](https://medium.com/@danaprata/singleton-pattern-a2d2127e02f2) con un esquema de reintentos hasta que se logre concretar la conexión.
+
+Con esto tenemos un márgen de por lo menos 55 segundos despuñes de ejecutar `docker-compose up` para poder concretar la conexión con la base.
+
 Como se sumó una nueva entidad `Room`, se desarrollaron endpoints para hacer un ABM completo de las mismas, además del ABM completo de `Devices`. Además se sumó un endpoint que devuelve las entidades anidadas, útil para un frontend SPA como el que estamos implementando.
 
 Una posible mejora es sumar paginado, más seguridad, validación de campos, etc. Que no se pudieron implementar por cuestiones de tiempo.

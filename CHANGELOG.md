@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.0.1
+
+* Project modification
+    * Implement singleton to prevent conexion refused errors starting the project with 'docker-compose up' command for the first time.
+
 ## 3.0.0
 
 * Project modification

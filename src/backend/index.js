@@ -4,7 +4,7 @@ var PORT = 3000;
 
 var express = require('express');
 var app = express();
-var dbConnection = require('./mysql-connector');
+const { getDatabaseInstance } = require('./mysql-connector');
 
 // to parse application/json
 app.use(express.json());
@@ -13,9 +13,23 @@ app.use(express.static('/home/node/app/static/'));
 
 //=======[ Main module code ]==================================================
 
+// Iniciar la conexión unos segundos después para evitar error al levantar con docker compose.
+setTimeout(() => {
+    try {
+        const dbInstance = getDatabaseInstance();
+        dbInstance.connect();
+    } catch (error) {
+        console.error('No se pudo conectar a la base de datos:', error);
+    }
+}, 5000); // 5000 ms = 5 segundos
+
 // ABM Dispositivos
 app.get('/devices', function (req, res, next) {
     try {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
         // Ejecutamos una query para obtener la lista de dispositivos
         devices = dbConnection.query('SELECT * FROM `Devices`', function (error, results) {
             if (error) throw error;
@@ -31,6 +45,11 @@ app.get('/devices', function (req, res, next) {
 app.post('/devices', function (req, res, next) {
     const device = req.body
     try {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
+        // Ejecutamos la query
         devices = dbConnection.query('INSERT INTO `Devices` SET ?', device, function (error) {
             if (error) {
                 console.error('Error insertando datos:', JSON.stringify(device))
@@ -50,6 +69,11 @@ app.put('/devices/:id', function (req, res, next) {
     const device = req.body
     const deviceId = req.params.id
     try {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
+        // Ejecutamos la query
         const query = 'UPDATE `Devices` SET ? WHERE id=' + deviceId
         devices = dbConnection.query(query, device, function (error) {
             if (error) {
@@ -68,6 +92,11 @@ app.put('/devices/:id', function (req, res, next) {
 app.delete('/devices/:id', function (req, res, next) {
     const deviceId = req.params.id
     try {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
+        // Ejecutamos la query
         const query = 'DELETE FROM `Devices` WHERE id=' + deviceId
         devices = dbConnection.query(query, function (error) {
             if (error) {
@@ -86,6 +115,10 @@ app.delete('/devices/:id', function (req, res, next) {
 // ABM Ambientes
 app.get('/rooms', function (req, res, next) {
     try {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
         // Ejecutamos una query para obtener la lista de ambientes
         rooms = dbConnection.query('SELECT * FROM `Rooms`', function (error, results) {
             if (error) throw error;
@@ -101,7 +134,12 @@ app.get('/rooms', function (req, res, next) {
 app.post('/rooms', function (req, res, next) {
     const room = req.body
     try {
-        rooms = dbConnection.query('INSERT INTO `Rooms` SET ?', room, function (error) {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
+        // Ejecutamos la query
+        rooms = dbInstance.query('INSERT INTO `Rooms` SET ?', room, function (error) {
             if (error) {
                 console.error('Error insertando datos:', JSON.stringify(room))
             };
@@ -119,8 +157,13 @@ app.put('/rooms/:id', function (req, res, next) {
     const room = req.body
     const roomId = req.params.id
     try {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
+        // Ejecutamos la query
         const query = 'UPDATE `Rooms` SET ? WHERE id=' + roomId
-        rooms = dbConnection.query(query, room, function (error) {
+        rooms = dbInstance.query(query, room, function (error) {
             if (error) {
                 console.error(`Error actualizando datos roomId: ${roomId}`, JSON.stringify(room))
             };
@@ -137,6 +180,11 @@ app.put('/rooms/:id', function (req, res, next) {
 app.delete('/rooms/:id', function (req, res, next) {
     const roomId = req.params.id
     try {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
+        // Ejecutamos la query
         const query = 'DELETE FROM `Rooms` WHERE id=' + roomId
         rooms = dbConnection.query(query, function (error) {
             if (error) {
@@ -155,6 +203,10 @@ app.delete('/rooms/:id', function (req, res, next) {
 // Listado de dispositivos por habitación
 app.get('/rooms/devices/list', function (req, res, next) {
     try {
+        // Reutilizamos la conexión
+        const dbInstance = getDatabaseInstance();
+        const dbConnection = dbInstance.connection;
+
         // Ejecutamos una query para obtener la lista de ambientes
         let rooms = []
         let devices = []
@@ -190,6 +242,5 @@ app.get('/rooms/devices/list', function (req, res, next) {
 
 app.listen(PORT, function (req, res) {
     //=======[ Main module code ]==================================================
-    // Iniciar la conexión unos segundos después para evitar error al levantar con docker compose.
     console.log("NodeJS API running correctly");
 });
