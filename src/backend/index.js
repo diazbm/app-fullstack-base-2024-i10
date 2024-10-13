@@ -22,7 +22,9 @@ app.get('/devices', function (req, res, next) {
             res.send(JSON.stringify(results)).status(200);
         });
     } catch (error) {
-        console.error('Ocurrió un error en la obtención de dispositivos', error)
+        console.error('Ocurrió un error en la obtención de dispositivos', error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 });
 
@@ -38,6 +40,8 @@ app.post('/devices', function (req, res, next) {
         });
     } catch (error) {
         console.error(`Ocurrió un error en la creación del dispositivo ${device.name}`, error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 
 });
@@ -56,6 +60,8 @@ app.put('/devices/:id', function (req, res, next) {
         });
     } catch (error) {
         console.error(`Ocurrió un error en la actualización del dispositivo ${deviceId}`, error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 });
 
@@ -72,6 +78,8 @@ app.delete('/devices/:id', function (req, res, next) {
         });
     } catch (error) {
         console.error(`Ocurrió un error en la eliminación del dispositivo ${deviceId}`, error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 });
 
@@ -85,6 +93,8 @@ app.get('/rooms', function (req, res, next) {
         });
     } catch (error) {
         console.error('Ocurrió un error en la obtención de ambientes', error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 });
 
@@ -100,6 +110,8 @@ app.post('/rooms', function (req, res, next) {
         });
     } catch (error) {
         console.error(`Ocurrió un error en la creación de ambiente ${room.name}`, error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 });
 
@@ -117,6 +129,8 @@ app.put('/rooms/:id', function (req, res, next) {
         });
     } catch (error) {
         console.error(`Ocurrió un error en la actualización del ambiente ${roomId}`, error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 });
 
@@ -133,6 +147,8 @@ app.delete('/rooms/:id', function (req, res, next) {
         });
     } catch (error) {
         console.error(`Ocurrió un error en la eliminación del ambiente ${roomId}`, error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 });
 
@@ -166,6 +182,8 @@ app.get('/rooms/devices/list', function (req, res, next) {
         });
     } catch (error) {
         console.error('Ocurrió un error en la obtención de dispositivos por habitación', error);
+        res.status(500);
+        res.send({ error: "internal server error" });
     }
 });
 
@@ -175,5 +193,3 @@ app.listen(PORT, function (req, res) {
     // Iniciar la conexión unos segundos después para evitar error al levantar con docker compose.
     console.log("NodeJS API running correctly");
 });
-
-//=======[ End of file ]=======================================================
