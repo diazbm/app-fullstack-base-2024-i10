@@ -28,12 +28,12 @@ class Database {
             // Si no se pudo establecer la conexión (por ejemplo porque la base aún no está levantada), se reinicia el valor de connection
             this.connection = null
 
-            // Se reintenta de forma recursiva cada 5 segundos hasta que la conexión se concrete, o hasta que se agoten los reintentos.
+            // Se reintenta de forma recursiva cada 10 segundos hasta que la conexión se concrete, o hasta que se agoten los reintentos.
             if(this.retry <= this.retryLimit) {
                 setTimeout(()=>{
                     this.retry = this.retry + 1; // Se incrementa el reintento
                     this.connect();
-                },5000);
+                },10000);
             } else {
                 console.error('Reintentos alcanzados');
                 throw err;

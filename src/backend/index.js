@@ -21,7 +21,7 @@ setTimeout(() => {
     } catch (error) {
         console.error('No se pudo conectar a la base de datos:', error);
     }
-}, 5000); // 5000 ms = 5 segundos
+}, 10000); // 10000 ms = 10 segundos
 
 // ABM Dispositivos
 app.get('/devices', function (req, res, next) {
