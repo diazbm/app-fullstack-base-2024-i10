@@ -160,37 +160,212 @@ En esta sección podés ver los detalles específicos de funcionamiento del cód
 
 Completá los pasos para agregar un dispositivo desde el cliente web.
 
+
+### Modelo de datos
+Se sumó una tabla nueva que representa los ambientes en los que se ubican los dispositivos, las tablas quedaron de la siguiente forma:
+
+`Rooms`: Tabla que representa las habitaciones, con un identificador único (id) que es auto-incremental y el nombre de la habitación (name).
+
+`Devices`: Tabla que representa los dispositivos asociados a las habitaciones. Contiene un identificador único (id), nombre del dispositivo (name), descripción (description), estado (state), tipo (type), y una clave foránea (room_id) que hace referencia a la habitación correspondiente.
+
+`Relaciones`: La relación es uno a muchos (1 a N), donde una habitación `Room` puede tener muchos dispositivos `Devices`, pero cada dispositivo pertenece a una sola habitación.
+
++--------------------+              +-----------------------+
+|      Rooms         |              |       Devices         |
++--------------------+              +-----------------------+
+| id   (INT, PK)     |   1 ------>  | id        (INT, PK)   |
+| name (VARCHAR)     |              | name      (TEXT)      |
++--------------------+              | description (TEXT)    |
+                                    | state     (INT)       |
+                                    | type      (INT)       |
+                                    | room_id   (INT, FK)   |
+                                    +-----------------------+
+
+
 ### Frontend
 
-Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
+En el frontend me basé en la aplicación [ceiot_base](https://github.com/cpantel/ceiot_base). Se aprovechó la lógica de usar clases específicas para renderizar html de forma dinámica, e interactuar con APIs.
+
+Se sumaron las siguientes funcionalidades:
+
+- Se incluye la entidad `Room` que define el ambiente en la que se encuentra ubicado un dispositivo.
+- Se listan los dispositivos por ambiente, en listas independientes.
+- Se permite un ABM completo de dispositivos reutilizando un único formulario a manera de "pop-up".
+- Se garantiza que el frontend sea consistente, haciendo limpieza de variables, y actualización en vivo de datos en pantalla, acorde a los líneamientos de una SPA.
+- Se pensó, pero no se pudo sumar el ABM de ambientes, de igual manera la implementación de API escala para poder hacerlo con poco esfuerzo en otra iteración.
 
 ### Backend
 
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
+Como se sumó una nueva entidad `Room`, se desarrollaron endpoints para hacer un ABM completo de las mismas, además del ABM completo de `Devices`. Además se sumó un endpoint que devuelve las entidades anidadas, útil para un frontend SPA como el que estamos implementando.
 
-<details><summary><b>Ver los endpoints disponibles</b></summary><br>
+Una posible mejora es sumar paginado, más seguridad, validación de campos, etc. Que no se pudieron implementar por cuestiones de tiempo.
 
-Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
+<details><summary><b>Endpoints disponibles para dispositivos</b></summary><br>
 
-1) Devolver el estado de los dispositivos.
+1) Devolver el listado de dispositivos
 
 ```json
-{
+ {
     "method": "get",
+    "url": "/devices",
     "request_headers": "application/json",
-    "request_body": "",
     "response_code": 200,
-    "request_body": {
-        "devices": [
-            {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
-            }
-        ]
-    },
+    "request_response": [
+        {
+            "id": 1,
+            "name": "Light 1",
+            "status": 1,
+            "type": 0,
+            "description": "Kitchen light",
+            "room_id": 1
+        }
+    ]
 }
-``` 
+```
+
+2) Crear un dispositivo
+
+```json
+ {
+    "method": "post",
+    "url": "/devices",
+    "request_headers": "application/json",
+    "request_body": {
+        "id": 1,
+        "name": "Light 1",
+        "status": 1,
+        "type": 0,
+        "description": "Kitchen light",
+        "room_id": 1
+    },
+    "response_code": 200,
+    "request_response": ""
+}
+```
+
+3) Actualizar un dispositivo
+
+```json
+ {
+    "method": "put",
+    "url": "/devices/:id",
+    "request_headers": "application/json",
+    "request_body": {
+        "id": 1,
+        "name": "Light 1",
+        "status": 1,
+        "type": 0,
+        "description": "Kitchen light",
+        "room_id": 1
+    },
+    "response_code": 200,
+    "request_response": ""
+}
+```
+
+4) Eliminar un dispositvo
+
+```json
+ {
+    "method": "delete",
+    "url": "/devices/:id",
+    "request_headers": "application/json",
+    "response_code": 200,
+    "request_response": "",
+}
+```
+
+<details><summary><b>Endpoints disponibles para dispositivos</b></summary><br>
+
+2) Devolver el listado de ambientes
+
+```json
+ {
+    "method": "get",
+    "url": "/rooms",
+    "request_headers": "application/json",
+    "response_code": 200,
+    "request_response": [
+        {
+            "id": 1,
+            "name": "Kitchen",
+        }
+    ]
+}
+```
+
+2) Crear un ambiente
+
+```json
+ {
+    "method": "post",
+    "url": "/rooms",
+    "request_headers": "application/json",
+    "request_body": {
+        "id": 1,
+        "name": "Kitchen"
+    },
+    "response_code": 200,
+    "request_response": ""
+}
+```
+
+3) Actualizar un ambiente
+
+```json
+ {
+    "method": "put",
+    "url": "/rooms/:id",
+    "request_headers": "application/json",
+    "request_body": {
+        "id": 1,
+        "name": "Kitchen"
+    },
+    "response_code": 200,
+    "request_response": ""
+}
+```
+
+4) Eliminar un ambiente
+
+```json
+ {
+    "method": "delete",
+    "url": "/rooms/:id",
+    "request_headers": "application/json",
+    "response_code": 200,
+    "request_response": "",
+}
+```
+
+4) Obtener lista de ambientes con sus dispositivos
+
+```json
+ {
+    "method": "GET",
+    "url": "/rooms/devices/all",
+    "request_headers": "application/json",
+    "response_code": 200,
+    "request_response": [
+        {
+            "id": 1,
+            "name": "Kitchen",
+            "devices": [
+                {
+                    "id": 1,
+                    "name": "Light 1",
+                    "status": 1,
+                    "type": 0,
+                    "description": "Kitchen light",
+                    "room_id": 1
+                }
+            ]
+        }
+    ]
+}
+```
+
+</details>
 
 </details>
 
