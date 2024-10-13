@@ -19,11 +19,11 @@ class Database {
         user     : 'root',
         password : 'userpass',
         database : 'smart_home'
-    });
+      });
 
       this.connection.connect((err) => {
         if (err) {
-            console.error('Error while connect to DB, retrying in 5seg ' + err.stack);
+            console.error('Error conectando a la base de datos, reintentando en 5seg' + err.stack);
 
             // Si no se pudo establecer la conexión (por ejemplo porque la base aún no está levantada), se reinicia el valor de connection
             this.connection = null
@@ -35,11 +35,11 @@ class Database {
                     this.connect();
                 },5000);
             } else {
-                console.error('Connection retries exhausted');
+                console.error('Reintentos alcanzados');
                 throw err;
             }
         } else {
-            console.log('Connected to DB under thread ID: ' + this.connection.threadId);
+            console.log('Conexión exitosa a la base de datos mediante el theadId: ' + this.connection.threadId);
         }
       });
     }
