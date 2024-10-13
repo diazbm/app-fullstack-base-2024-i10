@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.0.0
+
+* Project modification
+    * Change database model, create new table and foreign key
+    * Add backend endpoint to interact with database, and error handling
+    * Change frontend to list devices by room, and implements CRUD of devices based on API endpoints
+    * Update README
+
 ## 2.2.0
 
 * Project modification
